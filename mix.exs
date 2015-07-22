@@ -26,7 +26,7 @@ defmodule Riak.Mixfile do
       {:pooler, github: "wrw/pooler", branch: "master"},
       {:meck, github: "eproxus/meck", tag: "0.8.2", override: true},
       {:riak_pb, github: "cjimison/riak_pb", override: true, tag: "2.0.0.16", compile: "./rebar get-deps compile deps_dir=../"},
-      {:riakc, github: "cjimison/riak-erlang-client", branch: "master"} ]
+      {:riakc, github: "cjimison/riak-erlang-client", branch: "master", compile: "./rebar get-deps compile deps_dir=../"} ]
   end
 
   defp description do
