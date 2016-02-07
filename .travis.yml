@@ -1,12 +1,11 @@
 language: elixir
 elixir:
-    - 1.0.2
+    - 1.1.1
 notifications:
   recipients:
     - drew@kerrigan.io
 otp_release:
-  - 17.0
-  - 17.1
+  - 18.1
 env:
   - MIX_ENV=test
 services:

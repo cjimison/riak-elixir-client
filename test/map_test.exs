@@ -70,4 +70,21 @@ defmodule Riak.CRDT.MapTest do
 
     assert :orddict.fetch({"nested_key", :map}, value_map) == [{{"flag_key", :flag}, true}]
   end
+
+  test "create, update, delete map" do
+    key = Riak.Helper.random_key
+
+    Map.new
+      |> Map.put("register_key", Register.new("Some Data"))
+      |> Riak.update("maps", "users", key)
+
+    reg_data = Riak.find("maps", "users", key)
+      |> Map.get(:register, "register_key")
+
+    assert "Some Data" == reg_data
+
+    Riak.delete("maps", "users", key)
+    assert Riak.find("maps", "users", key) == nil
+
+  end
 end

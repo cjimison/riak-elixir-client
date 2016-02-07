@@ -1,5 +1,8 @@
 # Riak Elixir Client
 [![Build Status](https://travis-ci.org/drewkerrigan/riak-elixir-client.svg?branch=master)](https://travis-ci.org/drewkerrigan/riak-elixir-client)
+[![Hex version](https://img.shields.io/hexpm/v/riak.svg "Hex Version")](https://hex.pm/packages/riak)
+![Hex downloads](https://img.shields.io/hexpm/dt/riak.svg "Hex Downloads")
+
 
 A Riak client written in Elixir.  Now includes connection pooling with [pooler](http://github.com/seth/pooler) and a variety of other improvements from [riex](https://github.com/edgurgel/riex).
 
@@ -21,8 +24,7 @@ def application do
 end
 ...
 defp deps do
-  # [ {:riak, "~> 1.0"} ] # This client will be released to Hex soon
-  [ {:riak, github: "drewkerrigan/riak-elixir-client"} ]
+  [ {:riak, "~> 1.0"} ]
 end
 ...
 ```
@@ -40,24 +42,25 @@ end
 Most functions in this module can be called by passing the pid of the established connection or using a pool of connections (provided by pooler).  Define pools by using the group `riak`.  Following is an example `config/config.exs`:
 
 ```elixir
-[pooler: [pools: [
-  [ name: :riaklocal1,
-    group: :riak,
-    max_count: 10,
-    init_count: 5,
-    start_mfa: {Riak.Connection, :start_link, []}
-  ],
-   [ name: :riaklocal2,
-    group: :riak,
-    max_count: 15,
-    init_count: 2,
-    start_mfa: {Riak.Connection, :start_link, ['127.0.0.1', 9090]}
-  ] ]
-]]
-
+config :pooler, pools:
+  [
+    [
+      name: :riaklocal1,
+      group: :riak,
+      max_count: 10,
+      init_count: 5,
+      start_mfa: { Riak.Connection, :start_link, [] }
+    ], [
+      name: :riaklocal2,
+      group: :riak,
+      max_count: 15,
+      init_count: 2,
+      start_mfa: { Riak.Connection, :start_link, ['127.0.0.1', 9090] }
+    ]
+  ]
 ```
 
-For an example using this functionality with a local Riak instance, check [`config/config.exs`](https://github.com/drewkerrigan/riak-elixir-client/blob/master/config/config.exs).  More information about Elixir configuration can be found on [http://elixir-lang.org(http://elixir-lang.org)]: [Application environment and configuration](http://elixir-lang.org/getting_started/mix_otp/10.html#toc_6).
+For an example using this functionality with a local Riak instance, check [`config/config.exs`](https://github.com/drewkerrigan/riak-elixir-client/blob/master/config/config.exs).  More information about Elixir configuration can be found on [http://elixir-lang.org](http://elixir-lang.org): [Application environment and configuration](http://elixir-lang.org/getting-started/mix-otp/distributed-tasks-and-configuration.html#application-environment-and-configuration).
 
 Once a pool configuration is properly defined in a project, calls to Riak can omit the pid.  For example:
 
